@@ -9,13 +9,15 @@ geneframe <- tbl_df(as.data.frame(get_Genes))
 
 gexons <- geneframe %>% select(knownGene.name, knownGene.exonCount, knownGene.exonStarts, knownGene.exonEnds)
 
-for (i in length(bfa$knownGene.exonStarts)){
-  bfa2$knownGene.exonStarts[i] <- strsplit(bfa$knownGene.exonStarts[i], ",")
-  bfa2$knownGene.exonEnds[i] <- strsplit(bfa$knownGene.exonEnds[i], ",")
+
+
+bfa2 <- data.frame(name=rep(bfa$knownGene.name, bfa$knownGene.exonCount), exonStarts = unlist(strsplit(bfa$knownGene.exonStarts, ",")), exonEnds = unlist(strsplit(bfa$knownGene.exonEnds,",")))
+
+temp=0
+
+for(i in 1:length(unique(bfa2$name))){
+  temp[i] = list(seq(from=1, to=bfa$knownGene.exonCount[i]))
 }
 
-for (j in length(bfa$knownGene.exonStarts[i])){
-      bgfa <- data.frame(name=factor(),exonCount=integer(),exonStarts=integer(),exonEnds=integer())
-      rbind(bgfa, name = bfa[1][i], exonCount = bfa[2][i], exonStarts = bfa[3][j], exonEnds = bfa$knownGene.exonStarts[4][j])
-}
-
+bfa2 <- bfa2 %>% mutate(exonNum = unlist(temp)) %>% select(name, exonNum, exonStarts, exonEnds)
+head(bfa2, 50)
