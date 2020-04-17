@@ -9,6 +9,7 @@ geneframe <- tbl_df(as.data.frame(get_Genes))
 
 gexons <- geneframe %>% select(knownGene.name, knownGene.exonCount, knownGene.exonStarts, knownGene.exonEnds)
 
+bfa <- gexons
 
 bfa2 <- data.frame(name=rep(bfa$knownGene.name, bfa$knownGene.exonCount), exonStarts = unlist(strsplit(bfa$knownGene.exonStarts, ",")), exonEnds = unlist(strsplit(bfa$knownGene.exonEnds,",")))
 
