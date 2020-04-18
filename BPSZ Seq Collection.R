@@ -17,10 +17,3 @@ for(i in 1:10){
 }
 
 ben
-
-call <- paste("http://api.genome.ucsc.edu/getData/track?genome=hg19;track=ncbiRefSeq;chrom=chr1;start=750000;end=55700000")
-call
-get_Seq <- fromJSON(call)
-Seqdf <- data.frame(get_Seq)
-names(Seqdf)
-head(Seqdf)
