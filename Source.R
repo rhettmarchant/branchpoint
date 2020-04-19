@@ -1,5 +1,6 @@
 #Sourcing Genetic Data from UCSC
 library(jsonlite)
+library(tidyverse)
 library(dplyr)
 library(tidyr)
 
