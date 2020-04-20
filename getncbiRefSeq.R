@@ -1,6 +1,7 @@
 #Collecting genes and converting into individual exon coordinates
 library(jsonlite)
 library(tidyverse)
+library(stringr)
 
 #Collect ncbiRefSeq table for chr12 from UCSC API
 #THIS DOES NOT GET ALL GENES FOR chr12 ONLY 750000 to 55700000
@@ -45,3 +46,6 @@ for(i in seq_along(allisoformExons$name)){
 
 #Create new data frame containing each gene exon only once
 alluniqueExons <- allisoformExons[newExons,] %>% filter(!is.na(name))
+
+#Create a searchable index for exonname
+alluniqueExons <- alluniqueExons %>% mutate(exonname = paste(name,"#",exonNum, sep =""))
