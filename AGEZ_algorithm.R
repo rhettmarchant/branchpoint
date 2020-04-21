@@ -1,30 +1,38 @@
 #Returns the AG exclusion zone for sequences in get_Seqs tables
+#CURRENTLY RETURNING:
+#Error in if (Seq[i] %in% c("g", "G") & Seq[i - 1] %in% c("a", "A") & i <  : argument is of length zero
 
 AGEZ <- function(y){
-    for(x in y$sequence){
-    SeqL <- str_length(x)
-    Seq <- strsplit(x,"")[[1]]
-    counter <- 0
+    AGEZdf <- data.frame(name=y$name,AG3SS=rep("0",nrow(y)),length=rep(0,nrow(y)),sequence=rep("0",nrow(y)), stringsAsFactors = FALSE)
+    g <- y$sequence
+    for(x in seq_along(g)){
+    SeqL <- str_length(g[x])
+    Seq <- strsplit(g[x],"")[[1]]
+    errors <- 0
     
-    if("G" %in% Seq[SeqL] & "A" %in% Seq[SeqL-1]){
-        print("Confirmed: AG 3'SS")
-        print(paste(Seq[(SeqL-1):SeqL],sep="",collapse=""))
+    if(Seq[SeqL] %in% c("g","G") & Seq[SeqL-1] %in% c("a","A")){
+        
         for(i in seq(SeqL,1,-1)){
-            if(Seq[i] == "G" & Seq[i-1] == "A" & i != SeqL){
-                #            counter <- counter + 1
-                #           if(counter == 2){
-                AGEZ <- Seq[seq(i-13,SeqL,1)]
-                print(paste(AGEZ, sep="", collapse=""))
+            if(Seq[i] %in% c("g","G") & Seq[i-1] %in% c("a","A") & i < SeqL){
+                if(i>13){
+                    m <- i-13
+                }
+                AGEZSeq <- Seq[seq(m,SeqL,1)]
+                AGEZdf$sequence[x] <- paste(AGEZSeq, sep="", collapse="")
+                AGEZdf$length[x] <- str_length(AGEZdf$sequence[x])
+                AGEZdf$AG3SS[x] <- TRUE
                 break
-                #            }
             }    
         }
         
     }else{
-        print("INVALID: No AG 3'SS")
+        AGEZdf$AG3SS[x] <- FALSE
+        AGEZdf$sequence[x] <- "ERROR INVALID 3'SS: No AG"
+        AGEZdf$length[x] <- NA
     }
     
 
     }
+    tbl_df(AGEZdf %>% filter(AG3SS=="TRUE"))
 }
     
