@@ -30,3 +30,8 @@ get_Seqs <- function(x){
     }
 sequences
 }
+
+set.seed(42)
+test <- sample(alluniqueExons$exonname, 300, replace = F)
+system.time(testSeqs <- get_Seqs(test))
+AGEZ(testSeqs)
