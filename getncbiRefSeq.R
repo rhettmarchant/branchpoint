@@ -22,17 +22,17 @@ strands = rep(RefSeqdf$strand, RefSeqdf$exonCount)
 exonNums = unlist(exnCount)
 EXONStarts = as.numeric(unlist(strsplit(RefSeqdf$exonStarts, ",")))
 EXONEnds = as.numeric(unlist(strsplit(RefSeqdf$exonEnds,",")))
-BPSZs = EXONStarts - 100
 
 #Extract dataframe from RefSeqdf containing reference number (ref), gene name(name), strand direction(strand)
 #coordinates of exon start (exonStart), coordinates of exon end (exonEnd) and the branch point search zone 100nt downstream of exonStart (BPSZ)
 
-allisoformExons <- data.frame(ref=refs,name=genenames,strand=strands,exonNum=exonNums,exonStarts = EXONStarts,exonEnds = EXONEnds,BPSZ=BPSZs)
+allisoformExons <- data.frame(ref=refs,name=genenames,strand=strands,exonNum=exonNums,exonStarts = EXONStarts,exonEnds = EXONEnds)
 
 #Create dataframes of forward and reverse exons for troubleshooting/development
 
-fwdexons <- allisoformExons %>% filter(strand == "+")
-rvsexons <-  allisoformExons %>% filter(strand == "-")
+fwdexons <- allisoformExons %>% filter(strand == "+") %>% mutate(BPSZ = exonStarts - 100)
+rvsexons <-  allisoformExons %>% filter(strand == "-") %>% mutate(BPSZ = exonEnds + 100)
+allisoformExons <- rbind(fwdexons,rvsexons)
 
 #Remove all duplicate exons i.e. multiple isoforms
 collector <- 0
