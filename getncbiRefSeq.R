@@ -2,6 +2,7 @@
 library(jsonlite)
 library(tidyverse)
 library(stringr)
+library(stringi)
 
 #Collect ncbiRefSeq table for chr12 from UCSC API
 #THIS DOES NOT GET ALL GENES FOR chr12 ONLY 750000 to 55700000

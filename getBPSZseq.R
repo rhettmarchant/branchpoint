@@ -51,8 +51,8 @@ get_Seqs <- function(x){
 }
 
 set.seed(3)
-test <- sample(alluniqueExons$exonname, 100, replace = F)
+test <- sample(alluniqueExons$exonname, 300, replace = F)
 system.time(testSeqs <- get_Seqs(test))
 browseURL('https://www.youtube.com/watch?v=WhPvJOnHotE')
-AGEZ(testSeqs)
+testAGEZ<-AGEZ(testSeqs)
 
